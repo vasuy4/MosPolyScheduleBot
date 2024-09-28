@@ -1,1 +1,1 @@
-from . import api
+from . import mospolytech_api

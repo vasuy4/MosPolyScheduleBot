@@ -1,1 +1,1 @@
-from . import mospolytech
+from . import mospolytech_handlers
