@@ -9,6 +9,7 @@ DEFAULT_USER_AGENT = (
 URLS = {
     "referer": "https://rasp.dmami.ru/",
     "groups": "https://rasp.dmami.ru/groups-list.json",
+    "schedule": "https://rasp.dmami.ru/site/group",
 }
 HEADERS = {"referer": URLS["referer"], "user-agent": DEFAULT_USER_AGENT}
 
@@ -24,6 +25,9 @@ def get_groups() -> List[str]:
     """Получить группы студентов"""
     data = json.loads(make_request(URLS["groups"]))
     return sorted(name for name in data["groups"])
+
+def get_schedule() -> List[str]:
+    pass
 
 
 if __name__ == "__main__":

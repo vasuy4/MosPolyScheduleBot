@@ -12,7 +12,7 @@ BORDERS_GROUPS: List[int] = [
 ]  # Границы отображения групп для избежания переполнения длины сообщения
 
 
-def gen_markup_switch_groups():
+def gen_markup_switch_groups() -> InlineKeyboardMarkup:
     """Создаёт инлайн-клавиатуру, переключающую списки групп"""
     button_back = InlineKeyboardButton(text="Назад⬅️", callback_data="back")
     button_forward = InlineKeyboardButton(text="Вперёд➡️", callback_data="forward")
@@ -23,7 +23,7 @@ def gen_markup_switch_groups():
 
 
 @bot.callback_query_handler(func=lambda callback_query: (callback_query.data == "back"))
-def back_answer(callback_query: CallbackQuery):
+def back_answer(callback_query: CallbackQuery) -> None:
     """Коллбэк. Удаляет инлайн-кнопки и сдвигает список групп назад"""
     bot.edit_message_reply_markup(
         callback_query.from_user.id, callback_query.message.message_id
@@ -45,7 +45,7 @@ def back_answer(callback_query: CallbackQuery):
 @bot.callback_query_handler(
     func=lambda callback_query: (callback_query.data == "forward")
 )
-def forward_answer(callback_query: CallbackQuery):
+def forward_answer(callback_query: CallbackQuery) -> None:
     """Коллбэк. Удаляет инлайн-кнопки и сдвигает список групп вперёд"""
     bot.edit_message_reply_markup(
         callback_query.from_user.id, callback_query.message.message_id
