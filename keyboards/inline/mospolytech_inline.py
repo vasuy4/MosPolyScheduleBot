@@ -28,16 +28,13 @@ def back_answer(callback_query: CallbackQuery) -> None:
     bot.edit_message_reply_markup(
         callback_query.from_user.id, callback_query.message.message_id
     )
-    min_left_border: int = max(0, BORDERS_GROUPS[0]-SHIFT_GROUP)
+    min_left_border: int = max(0, BORDERS_GROUPS[0] - SHIFT_GROUP)
     BORDERS_GROUPS[0] = min_left_border
     BORDERS_GROUPS[1] = min_left_border + SHIFT_GROUP
     groups: List[str] = get_groups()
     bot.reply_to(
         callback_query.message,
-        "Список групп:\n"
-        + ", ".join(
-            groups[BORDERS_GROUPS[0]: BORDERS_GROUPS[1]]
-        ),
+        "Список групп:\n" + ", ".join(groups[BORDERS_GROUPS[0] : BORDERS_GROUPS[1]]),
         reply_markup=gen_markup_switch_groups(),
     )
 
@@ -51,14 +48,11 @@ def forward_answer(callback_query: CallbackQuery) -> None:
         callback_query.from_user.id, callback_query.message.message_id
     )
     groups: List[str] = get_groups()
-    max_right_border: int = min(len(groups), BORDERS_GROUPS[1]+SHIFT_GROUP)
+    max_right_border: int = min(len(groups), BORDERS_GROUPS[1] + SHIFT_GROUP)
     BORDERS_GROUPS[0] = max_right_border - SHIFT_GROUP
     BORDERS_GROUPS[1] = max_right_border
     bot.reply_to(
         callback_query.message,
-        "Список групп:\n"
-        + ", ".join(
-            groups[BORDERS_GROUPS[0]: BORDERS_GROUPS[1]]
-        ),
+        "Список групп:\n" + ", ".join(groups[BORDERS_GROUPS[0] : BORDERS_GROUPS[1]]),
         reply_markup=gen_markup_switch_groups(),
     )

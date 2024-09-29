@@ -1,6 +1,6 @@
 import json
 import requests
-from typing import List
+from typing import List, Dict, Union
 
 DEFAULT_USER_AGENT = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -21,14 +21,104 @@ def make_request(url: str) -> str:
     return content
 
 
+def parse_grid(grid_source: dict) -> list[list]:
+    # creating modified grid
+    grid_modified = []
+    for key_i in grid_source:
+        day = []
+        for key_j in grid_source[key_i]:
+            section = []
+            for obj in grid_source[key_i][key_j]:
+                # preparing link for event
+                link = obj["e_link"]
+                if link is None:
+                    dirty_link = obj["auditories"][0]["title"]
+                    if dirty_link[0:7] == "<a href":
+                        link = dirty_link[9:].split('"')[0]
+                # preparing dates for event
+                if len(key_i) == 10:
+                    dates = [".".join(d.split("-")[::-1]) for d in [key_i] * 2]
+                else:
+                    dates = [
+                        ".".join(d.split("-")[::-1]) for d in [obj["df"], obj["dt"]]
+                    ]
+                # creating event
+                event = {
+                    "title": obj["sbj"].strip(),
+                    "type": obj["type"],
+                    "teachers": [
+                        " ".join(t.strip().split()) for t in obj["teacher"].split(",")
+                    ],
+                    "location": obj["location"].strip(),
+                    "rooms": [r.strip().replace("_", "") for r in obj["shortRooms"]],
+                    "link": link,
+                    "dates": dates,
+                }
+                # clearing event fields
+                event["teachers"] = list(filter(lambda t: t != "", event["teachers"]))
+                # appending
+                section.append(event)
+            day.append(section)
+        grid_modified.append(day)
+
+    # returning modified grid
+    return grid_modified
+
+
 def get_groups() -> List[str]:
     """Получить группы студентов"""
     data = json.loads(make_request(URLS["groups"]))
     return sorted(name for name in data["groups"])
 
-def get_schedule() -> List[str]:
-    pass
+
+def get_schedule() -> Dict[str, Union[str, bool, List[Union[str, list]]]]:
+    group = "221-324"
+    is_session = False
+    url: str = (
+        URLS["schedule"]
+        + f"?group={group.replace(' ', '%20')}&session={1 if is_session else 0}"
+    )
+    content: str = make_request(url)
+    data: Dict[
+        str,
+        Union[
+            str,
+            bool,
+            Dict[
+                str,
+                Union[
+                    str,
+                    Dict[
+                        str,
+                        List[Dict[str, Union[str, List[Union[Dict[str, str], str]]]]],
+                    ],
+                ],
+            ],
+        ],
+    ] = json.loads(content)
+    schedule = {
+        "group": group,
+        "type": "evening" if data["group"]["evening"] else "morning",
+        "is_session": data["isSession"],
+        "dates": [
+            ".".join(d.split("-")[::-1])
+            for d in [data["group"]["dateFrom"], data["group"]["dateTo"]]
+        ],
+        "grid": parse_grid(data["grid"]),
+    }
+    return schedule
 
 
 if __name__ == "__main__":
-    print("Список студентов:\n" + ", ".join(get_groups()))
+    sch = get_schedule()
+    for k, v in sch.items():
+        print(type(k), k, "---", type(v), v)
+
+    for v in sch["grid"]:
+        print("==", type(v), v)
+        for vv in v:
+            print("===", type(vv), v)
+            for vvv in vv:
+                print("====", type(vvv), v)
+                for vvvv in vvv:
+                    print("=====", type(vvvv), vvvv)

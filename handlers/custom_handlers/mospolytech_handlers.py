@@ -13,9 +13,6 @@ def bot_get_groups(message: Message):
     groups: List[str] = get_groups()
     bot.reply_to(
         message,
-        "Список групп:\n"
-        + ", ".join(
-            groups[BORDERS_GROUPS[0]: BORDERS_GROUPS[1]]
-        ),
+        "Список групп:\n" + ", ".join(groups[BORDERS_GROUPS[0] : BORDERS_GROUPS[1]]),
         reply_markup=gen_markup_switch_groups(),
     )
