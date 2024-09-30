@@ -72,41 +72,7 @@ def get_groups() -> List[str]:
     return sorted(name for name in data["groups"])
 
 
-def get_schedule() -> Dict[
-    str,
-    Union[
-        List[str],
-        str,
-        List[
-            Union[
-                List[
-                    Union[
-                        List[Dict[str, Union[List[str], str]]],
-                        List[Any],
-                        List[Dict[str, Union[List[str], str, List[Any]]]],
-                    ]
-                ],
-                List[
-                    Union[
-                        List[
-                            Union[
-                                Dict[str, Union[List[str], str, List[Any]]],
-                                Dict[str, Union[List[str], str]],
-                            ]
-                        ],
-                        List[Dict[str, Union[List[str], str]]],
-                        List[Any],
-                    ]
-                ],
-                List[
-                    Union[List[Any], List[Dict[str, Union[List[str], str, List[Any]]]]]
-                ],
-                List[Union[List[Dict[str, Union[List[str], str]]], List[Any]]],
-            ]
-        ],
-    ],
-]:
-    group = "221-324"
+def get_schedule(group: str) -> Dict[str, Union[List[Union[list, str]], str]]:
     is_session = False
     url: str = (
         URLS["schedule"]
@@ -117,69 +83,7 @@ def get_schedule() -> Dict[
         str,
         Union[
             str,
-            Dict[
-                str,
-                Union[
-                    Dict[
-                        str,
-                        Union[
-                            List[Any],
-                            List[
-                                Union[
-                                    Dict[
-                                        str, Union[str, List[Dict[str, str]], List[str]]
-                                    ],
-                                    Dict[
-                                        str, Union[str, List[str], List[Dict[str, str]]]
-                                    ],
-                                ]
-                            ],
-                            List[
-                                Dict[str, Union[str, List[str], List[Dict[str, str]]]]
-                            ],
-                        ],
-                    ],
-                    Dict[
-                        str,
-                        Union[
-                            List[Any],
-                            List[
-                                Dict[str, Union[str, List[str], List[Dict[str, str]]]]
-                            ],
-                        ],
-                    ],
-                    Dict[
-                        str,
-                        Union[
-                            List[
-                                Dict[str, Union[str, List[Any], List[Dict[str, str]]]]
-                            ],
-                            List[Any],
-                        ],
-                    ],
-                    Dict[
-                        str,
-                        Union[
-                            List[Any],
-                            List[
-                                Dict[str, Union[str, List[Dict[str, str]], List[str]]]
-                            ],
-                            List[
-                                Dict[str, Union[str, List[str], List[Dict[str, str]]]]
-                            ],
-                        ],
-                    ],
-                    Dict[
-                        str,
-                        Union[
-                            List[
-                                Dict[str, Union[str, List[Dict[str, str]], List[str]]]
-                            ],
-                            List[Any],
-                        ],
-                    ],
-                ],
-            ],
+            Dict[str, dict],
             Dict[str, Union[str, int]],
         ],
     ] = json.loads(content)
@@ -199,4 +103,4 @@ def get_schedule() -> Dict[
 
 
 if __name__ == "__main__":
-    sch = get_schedule()
+    sch = get_schedule("221-324")
