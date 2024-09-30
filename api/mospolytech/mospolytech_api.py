@@ -1,6 +1,7 @@
 import json
 import requests
-from typing import List, Dict, Union
+from typing import List, Dict, Union, Any
+from get_type_annotations.get_type_annotations import get_type_annotation
 
 DEFAULT_USER_AGENT = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -71,7 +72,40 @@ def get_groups() -> List[str]:
     return sorted(name for name in data["groups"])
 
 
-def get_schedule() -> Dict[str, Union[str, bool, List[Union[str, list]]]]:
+def get_schedule() -> Dict[
+    str,
+    Union[
+        List[str],
+        str,
+        List[
+            Union[
+                List[
+                    Union[
+                        List[Dict[str, Union[List[str], str]]],
+                        List[Any],
+                        List[Dict[str, Union[List[str], str, List[Any]]]],
+                    ]
+                ],
+                List[
+                    Union[
+                        List[
+                            Union[
+                                Dict[str, Union[List[str], str, List[Any]]],
+                                Dict[str, Union[List[str], str]],
+                            ]
+                        ],
+                        List[Dict[str, Union[List[str], str]]],
+                        List[Any],
+                    ]
+                ],
+                List[
+                    Union[List[Any], List[Dict[str, Union[List[str], str, List[Any]]]]]
+                ],
+                List[Union[List[Dict[str, Union[List[str], str]]], List[Any]]],
+            ]
+        ],
+    ],
+]:
     group = "221-324"
     is_session = False
     url: str = (
@@ -83,17 +117,70 @@ def get_schedule() -> Dict[str, Union[str, bool, List[Union[str, list]]]]:
         str,
         Union[
             str,
-            bool,
             Dict[
                 str,
                 Union[
-                    str,
                     Dict[
                         str,
-                        List[Dict[str, Union[str, List[Union[Dict[str, str], str]]]]],
+                        Union[
+                            List[Any],
+                            List[
+                                Union[
+                                    Dict[
+                                        str, Union[str, List[Dict[str, str]], List[str]]
+                                    ],
+                                    Dict[
+                                        str, Union[str, List[str], List[Dict[str, str]]]
+                                    ],
+                                ]
+                            ],
+                            List[
+                                Dict[str, Union[str, List[str], List[Dict[str, str]]]]
+                            ],
+                        ],
+                    ],
+                    Dict[
+                        str,
+                        Union[
+                            List[Any],
+                            List[
+                                Dict[str, Union[str, List[str], List[Dict[str, str]]]]
+                            ],
+                        ],
+                    ],
+                    Dict[
+                        str,
+                        Union[
+                            List[
+                                Dict[str, Union[str, List[Any], List[Dict[str, str]]]]
+                            ],
+                            List[Any],
+                        ],
+                    ],
+                    Dict[
+                        str,
+                        Union[
+                            List[Any],
+                            List[
+                                Dict[str, Union[str, List[Dict[str, str]], List[str]]]
+                            ],
+                            List[
+                                Dict[str, Union[str, List[str], List[Dict[str, str]]]]
+                            ],
+                        ],
+                    ],
+                    Dict[
+                        str,
+                        Union[
+                            List[
+                                Dict[str, Union[str, List[Dict[str, str]], List[str]]]
+                            ],
+                            List[Any],
+                        ],
                     ],
                 ],
             ],
+            Dict[str, Union[str, int]],
         ],
     ] = json.loads(content)
     schedule = {
@@ -106,19 +193,10 @@ def get_schedule() -> Dict[str, Union[str, bool, List[Union[str, list]]]]:
         ],
         "grid": parse_grid(data["grid"]),
     }
+    print(json.dumps(schedule, indent=4))
+    print(get_type_annotation(schedule))
     return schedule
 
 
 if __name__ == "__main__":
     sch = get_schedule()
-    for k, v in sch.items():
-        print(type(k), k, "---", type(v), v)
-
-    for v in sch["grid"]:
-        print("==", type(v), v)
-        for vv in v:
-            print("===", type(vv), v)
-            for vvv in vv:
-                print("====", type(vvv), v)
-                for vvvv in vvv:
-                    print("=====", type(vvvv), vvvv)
