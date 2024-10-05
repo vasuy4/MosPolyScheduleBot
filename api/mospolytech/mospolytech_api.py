@@ -1,7 +1,6 @@
 import json
 import requests
 from typing import List, Dict, Union, Any
-from get_type_annotations.get_type_annotations import get_type_annotation
 
 DEFAULT_USER_AGENT = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "

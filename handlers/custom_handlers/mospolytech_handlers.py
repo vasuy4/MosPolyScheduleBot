@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 from telebot.types import Message
 from api.mospolytech.mospolytech_api import get_groups, get_schedule
 
@@ -42,10 +43,17 @@ def bot_get_schedule(message: Message):
         schedule = get_schedule(group)
         result += f"Расписание для группы {group}:\n"
         for all_day in schedule["grid"]:
+            now_pair = 0
             for day in all_day:
                 if day:
+                    print(day)
                     day = day[0]
-                    result += f"\nПредмет - {day["title"]}\nЛокация - {day["location"]} {day["rooms"][0] if len(day["rooms"]) > 0 else ""}"
+                    date1 = datetime.strptime(day['dates'][0].replace(".", "-"), "%d-%m-%Y")
+                    date2 = datetime.strptime(day['dates'][1].replace(".", "-"), "%d-%m-%Y")
+                    if date1 < datetime.now() < date2:
+                        now_pair += 1
+                        link: str = day.get('link')
+                        result += f"\n{now_pair}) {day['title']}: {day['rooms'][0] if not link else link}"
             result += "\n\n"
     else:
         result = 'Введите название существующей группы.\nНапример, "/schedule 221-324"'
