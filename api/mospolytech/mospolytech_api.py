@@ -72,21 +72,14 @@ def get_groups() -> List[str]:
     return sorted(name for name in data["groups"])
 
 
-def get_schedule(group: str) -> Dict[str, Union[List[Union[list, str]], str]]:
+def get_schedule(group: str) -> Dict[str, Union[list, str]]:
     is_session = False
     url: str = (
         URLS["schedule"]
         + f"?group={group.replace(' ', '%20')}&session={1 if is_session else 0}"
     )
     content: str = make_request(url)
-    data: Dict[
-        str,
-        Union[
-            str,
-            Dict[str, dict],
-            Dict[str, Union[str, int]],
-        ],
-    ] = json.loads(content)
+    data: Dict[str, Union[str, dict]] = json.loads(content)
     schedule = {
         "group": group,
         "type": "evening" if data["group"]["evening"] else "morning",
@@ -97,8 +90,6 @@ def get_schedule(group: str) -> Dict[str, Union[List[Union[list, str]], str]]:
         ],
         "grid": parse_grid(data["grid"]),
     }
-    print(json.dumps(schedule, indent=4))
-    print(get_type_annotation(schedule))
     return schedule
 
 
