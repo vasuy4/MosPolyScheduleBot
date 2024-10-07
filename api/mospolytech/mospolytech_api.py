@@ -151,7 +151,7 @@ def get_day(schedule: Dict[str, Union[list, str]], date: str) -> dict:
 
 
 def get_now_week(schedule: Dict[str, Union[list, str]]):
-    """Возвращает словарь с расписанием нынешней недели"""
+    """Возвращает словарь с расписанием текущей недели"""
     week = {
         "group": schedule["group"],
         "type": schedule["type"],
@@ -159,7 +159,7 @@ def get_now_week(schedule: Dict[str, Union[list, str]]):
         "week": {}
     }
     date = datetime.today() - timedelta(days=datetime.today().weekday() % 7)
-    for i in range(5):
+    for i in range(6):
         new_day = get_day(schedule, date.strftime("%d.%m.%Y"))
         week["week"][new_day["date"]] = new_day["day"]
         date += timedelta(days=1)
