@@ -1,6 +1,7 @@
 import json
 import requests
 from typing import List, Dict, Union, Any
+from datetime import datetime, timedelta
 
 DEFAULT_USER_AGENT = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -12,7 +13,26 @@ URLS = {
     "schedule": "https://rasp.dmami.ru/site/group",
 }
 HEADERS = {"referer": URLS["referer"], "user-agent": DEFAULT_USER_AGENT}
-
+TIME_SECTIONS = {
+    "morning": [
+        ["09:00", "10:30"],
+        ["10:40", "12:10"],
+        ["12:20", "13:50"],
+        ["14:30", "16:00"],
+        ["16:10", "17:40"],
+        ["17:50", "19:20"],
+        ["19:30", "21:00"],
+    ],
+    "evening": [
+        ["09:00", "10:30"],
+        ["10:40", "12:10"],
+        ["12:20", "13:50"],
+        ["14:30", "16:00"],
+        ["16:10", "17:40"],
+        ["18:20", "19:40"],
+        ["19:50", "21:10"],
+    ],
+}
 
 def make_request(url: str) -> str:
     """Сделать запрос по ссылке для получения информации"""
@@ -91,10 +111,63 @@ def get_schedule(group: str) -> Dict[str, Union[list, str]]:
     }
     return schedule
 
-def get_day():
-    """Возвращает словарь с расписанием указанного дня"""
 
+def get_day(schedule: Dict[str, Union[list, str]], date: str) -> dict:
+    """Возвращает словарь с расписанием указанного дня"""
+    format_date: str = "%d.%m.%Y"
+    d_date = datetime.strptime(date, format_date)
+    grid = schedule["grid"]
+    if len(grid) == 6:
+        w = d_date.weekday()
+        if w < 6:
+            raw_day = grid[w]
+        else:
+            raw_day = [[] for _ in range(7)]
+    else:
+        d = abs((d_date - datetime.strptime(schedule["dates"][0], format_date)).days)
+        raw_day = grid[d]
+
+    day = {
+        "group": schedule["group"],
+        "type": schedule["type"],
+        "is_session": schedule["is_session"],
+        "date": date,
+        "day": [],
+    }
+
+    for index, section in enumerate(raw_day):
+        for raw_sbj in section:
+            if (
+                    datetime.strptime(raw_sbj["dates"][0], format_date)
+                    <= datetime.strptime(date, format_date)
+                    <= datetime.strptime(raw_sbj["dates"][1], format_date)
+            ):
+                event = {"time": TIME_SECTIONS[schedule["type"]][index], "subject": dict(raw_sbj)}
+                del event["subject"]["dates"]
+                day["day"].append(event)
+                break
+
+    return day
+
+
+def get_now_week(schedule: Dict[str, Union[list, str]]):
+    """Возвращает словарь с расписанием нынешней недели"""
+    week = {
+        "group": schedule["group"],
+        "type": schedule["type"],
+        "is_session": schedule["is_session"],
+        "week": {}
+    }
+    date = datetime.today() - timedelta(days=datetime.today().weekday() % 7)
+    for i in range(5):
+        new_day = get_day(schedule, date.strftime("%d.%m.%Y"))
+        week["week"][new_day["date"]] = new_day["day"]
+        date += timedelta(days=1)
+
+    return week
 
 
 if __name__ == "__main__":
     sch = get_schedule("221-324")
+    #print(get_day(sch, datetime.now().date().strftime("%d.%m.%Y")))  # datetime.now().date().strftime("%d.%m.%Y")
+    print(get_now_week(sch))
