@@ -34,6 +34,7 @@ TIME_SECTIONS = {
     ],
 }
 
+
 def make_request(url: str) -> str:
     """Сделать запрос по ссылке для получения информации"""
     r: requests.Response = requests.get(url=url, headers=HEADERS)
@@ -138,11 +139,14 @@ def get_day(schedule: Dict[str, Union[list, str]], date: str) -> dict:
     for index, section in enumerate(raw_day):
         for raw_sbj in section:
             if (
-                    datetime.strptime(raw_sbj["dates"][0], format_date)
-                    <= datetime.strptime(date, format_date)
-                    <= datetime.strptime(raw_sbj["dates"][1], format_date)
+                datetime.strptime(raw_sbj["dates"][0], format_date)
+                <= datetime.strptime(date, format_date)
+                <= datetime.strptime(raw_sbj["dates"][1], format_date)
             ):
-                event = {"time": TIME_SECTIONS[schedule["type"]][index], "subject": dict(raw_sbj)}
+                event = {
+                    "time": TIME_SECTIONS[schedule["type"]][index],
+                    "subject": dict(raw_sbj),
+                }
                 del event["subject"]["dates"]
                 day["day"].append(event)
                 break
@@ -156,7 +160,7 @@ def get_now_week(schedule: Dict[str, Union[list, str]]):
         "group": schedule["group"],
         "type": schedule["type"],
         "is_session": schedule["is_session"],
-        "week": {}
+        "week": {},
     }
     date = datetime.today() - timedelta(days=datetime.today().weekday() % 7)
     for i in range(6):
@@ -169,5 +173,5 @@ def get_now_week(schedule: Dict[str, Union[list, str]]):
 
 if __name__ == "__main__":
     sch = get_schedule("221-324")
-    #print(get_day(sch, datetime.now().date().strftime("%d.%m.%Y")))  # datetime.now().date().strftime("%d.%m.%Y")
+    # print(get_day(sch, datetime.now().date().strftime("%d.%m.%Y")))  # datetime.now().date().strftime("%d.%m.%Y")
     print(get_now_week(sch))

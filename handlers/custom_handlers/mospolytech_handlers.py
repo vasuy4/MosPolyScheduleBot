@@ -65,8 +65,12 @@ def bot_get_schedule(message: Message):
                 result.append(day_str)
 
     else:
-        result = ['Введите название существующей группы.\nНапример, "/schedule 221-324"']
+        result = [
+            'Введите название существующей группы.\nНапример, "/schedule 221-324"'
+        ]
 
     for messageField in result:
         for shift in range(0, len(messageField), 1000):
-            bot.reply_to(message, messageField[shift:1000+shift], parse_mode="Markdown")
+            bot.reply_to(
+                message, messageField[shift : 1000 + shift], parse_mode="Markdown"
+            )
