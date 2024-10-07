@@ -55,7 +55,10 @@ def bot_get_schedule(message: Message):
                 elif link:
                     day_str += f" - {link}"
                 day_str += "\n"
-            day_str += "\n\n"
+            if day_str[-2] == "=":
+                day_str = ""
+            else:
+                day_str += "\n\n"
             if len(result[-1]) + len(day_str) < 1000:
                 result[-1] += day_str
             else:
