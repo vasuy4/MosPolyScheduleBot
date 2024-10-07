@@ -46,7 +46,6 @@ def bot_get_schedule(message: Message):
             now_pair = 0
             for day in all_day:
                 if day:
-                    print(day)
                     day = day[0]
                     date1 = datetime.strptime(day['dates'][0].replace(".", "-"), "%d-%m-%Y")
                     date2 = datetime.strptime(day['dates'][1].replace(".", "-"), "%d-%m-%Y")
@@ -54,9 +53,17 @@ def bot_get_schedule(message: Message):
                         now_pair += 1
                         link: str = day.get('link')
                         result += f"\n{now_pair}) {day['title']}: {day['rooms'][0] if not link else link}"
-            result += "\n\n"
+            result += "\n==="
+        result: List[str] = result.replace("' target='_blank'>📁 ПД</a>", "").split("===")
+        result_full = [""]
+        for day in result:
+            if len(day) + len(result_full[-1]) < 1000:
+                result_full[-1] += day
+                continue
+            result_full.append(day)
     else:
-        result = 'Введите название существующей группы.\nНапример, "/schedule 221-324"'
+        result_full = ['Введите название существующей группы.\nНапример, "/schedule 221-324"']
 
-    for shift in range(0, len(result), 1000):
-        bot.reply_to(message, result[shift:1000+shift])
+    for messageField in result_full:
+        for shift in range(0, len(messageField), 1000):
+            bot.reply_to(message, messageField[shift:1000+shift])

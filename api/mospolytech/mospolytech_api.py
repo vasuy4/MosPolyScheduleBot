@@ -91,6 +91,10 @@ def get_schedule(group: str) -> Dict[str, Union[list, str]]:
     }
     return schedule
 
+def get_day():
+    """Возвращает словарь с расписанием указанного дня"""
+
+
 
 if __name__ == "__main__":
     sch = get_schedule("221-324")
