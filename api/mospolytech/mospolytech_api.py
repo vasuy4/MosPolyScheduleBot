@@ -42,7 +42,7 @@ def make_request(url: str) -> str:
     return content
 
 
-def parse_grid(grid_source: dict) -> list[list]:
+def parse_grid(grid_source: dict) -> List[list]:
     # creating modified grid
     grid_modified = []
     for key_i in grid_source:
@@ -154,7 +154,7 @@ def get_day(schedule: Dict[str, Union[list, str]], date: str) -> dict:
     return day
 
 
-def get_now_week(schedule: Dict[str, Union[list, str]]):
+def get_now_week(schedule: Dict[str, Union[list, str]]) -> Dict[str, Union[dict, bool, str]]:
     """Возвращает словарь с расписанием текущей недели"""
     week = {
         "group": schedule["group"],
