@@ -4,7 +4,7 @@ from PIL import Image
 import os
 
 
-class Model():
+class Model:
     def __init__(self):
         model_path = os.path.join(os.path.dirname(__file__), "cifar10_model.keras")
         self.model = models.load_model(model_path)
