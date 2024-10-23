@@ -45,11 +45,11 @@ def bot_get_schedule(message: Message):
         week = get_now_week(schedule)
         result.append(f"*Расписание для группы {group}:*\n\n")
         for date, schedule_day in week["week"].items():
-            day_str = f"===== {weekdays[datetime.strptime(date, "%d.%m.%Y").weekday()]} - {date} =====\n"
+            day_str = f"===== {weekdays[datetime.strptime(date, '%d.%m.%Y').weekday()]} - {date} =====\n"
             for subject in schedule_day:
-                day_str += f"*{subject["time"][0]}-{subject["time"][1]}*: {subject["subject"]["title"]}"
-                rooms: Optional[str] = subject["subject"].get("rooms")
-                link: Optional[str] = subject["subject"].get("link")
+                day_str += f"*{subject['time'][0]}-{subject['time'][1]}*: {subject['subject']['title']}"
+                rooms: Optional[str] = subject['subject'].get("rooms")
+                link: Optional[str] = subject['subject'].get("link")
                 if rooms:
                     day_str += "_ - " + " - ".join(rooms) + "_"
                 elif link:
