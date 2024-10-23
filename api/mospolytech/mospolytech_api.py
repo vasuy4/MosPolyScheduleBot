@@ -154,7 +154,9 @@ def get_day(schedule: Dict[str, Union[list, str]], date: str) -> dict:
     return day
 
 
-def get_now_week(schedule: Dict[str, Union[list, str]]) -> Dict[str, Union[dict, bool, str]]:
+def get_now_week(
+    schedule: Dict[str, Union[list, str]]
+) -> Dict[str, Union[dict, bool, str]]:
     """Возвращает словарь с расписанием текущей недели"""
     week = {
         "group": schedule["group"],

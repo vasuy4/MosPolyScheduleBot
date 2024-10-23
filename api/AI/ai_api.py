@@ -3,7 +3,10 @@ from config_data.config import AI_API_KEY
 
 URL = "https://open-ai21.p.rapidapi.com/claude3"
 
-example_payload = {"messages": [{"role": "user", "content": "Привет!"}], "web_access": False}
+example_payload = {
+    "messages": [{"role": "user", "content": "Привет!"}],
+    "web_access": False,
+}
 headers = {
     "x-rapidapi-key": AI_API_KEY,
     "x-rapidapi-host": "open-ai21.p.rapidapi.com",

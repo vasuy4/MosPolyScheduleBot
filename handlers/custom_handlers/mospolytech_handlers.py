@@ -49,8 +49,8 @@ def bot_get_schedule(message: Message):
             day_str = f"===== {weekdays[datetime.strptime(date, '%d.%m.%Y').weekday()]} - {date} =====\n"
             for subject in schedule_day:
                 day_str += f"*{subject['time'][0]}-{subject['time'][1]}*: {subject['subject']['title']}"
-                rooms: Optional[str] = subject['subject'].get("rooms")
-                link: Optional[str] = subject['subject'].get("link")
+                rooms: Optional[str] = subject["subject"].get("rooms")
+                link: Optional[str] = subject["subject"].get("link")
                 if rooms:
                     day_str += "_ - " + " - ".join(rooms) + "_"
                 elif link:

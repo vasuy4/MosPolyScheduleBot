@@ -8,7 +8,18 @@ class Model:
     def __init__(self):
         model_path = os.path.join(os.path.dirname(__file__), "cifar10_model.keras")
         self.model = models.load_model(model_path)
-        self.class_names = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
+        self.class_names = [
+            "airplane",
+            "automobile",
+            "bird",
+            "cat",
+            "deer",
+            "dog",
+            "frog",
+            "horse",
+            "ship",
+            "truck",
+        ]
 
     def predict_image(self, image_path: str):
         # Загрузка и предобработка изображения

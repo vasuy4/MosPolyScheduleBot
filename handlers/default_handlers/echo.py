@@ -10,4 +10,8 @@ def bot_echo(message: Message):
     if message.text.startswith("/"):
         bot.reply_to(message, "Для просмотра доступных команд введите /help")
     else:
-        bot.reply_to(message, ai_api.get_ai_response(message.text)["result"] + ".\n*Если вы хотите воспользоваться функционалом бота, посмотрите список команд: /help")
+        bot.reply_to(
+            message,
+            ai_api.get_ai_response(message.text)["result"]
+            + ".\n*Если вы хотите воспользоваться функционалом бота, посмотрите список команд: /help",
+        )
