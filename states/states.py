@@ -7,4 +7,5 @@ class UserState(StatesGroup):
     """
 
     base = State()  # дефолтное состояние
-    predict_state = State()  # состояние для определения изображений
+    predict_cifar_state = State()  # состояние для определения изображений
+    predict_mospolytech_state = State()  # состояние для определения адреса корпуса мосполитеха по изображению

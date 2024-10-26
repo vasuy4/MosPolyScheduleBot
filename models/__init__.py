@@ -1,1 +1,1 @@
-from . import cifar
+from . import predict_image_models

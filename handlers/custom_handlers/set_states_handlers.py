@@ -12,12 +12,23 @@ def set_base_state(message):
     )
 
 
-@bot.message_handler(commands=["predict"])
-def set_predict_state(message):
+@bot.message_handler(commands=["predict_obj"])
+def set_predict_cifar_state(message):
     """Переход в режим определения изображений"""
-    bot.set_state(message.from_user.id, UserState.predict_state, message.chat.id)
+    bot.set_state(message.from_user.id, UserState.predict_cifar_state, message.chat.id)
     bot.send_message(
         message.from_user.id,
-        "Пришлите фотографию для того, чтобы бот её угадал. Введите /base для "
-        "перехода в стандартный режим",
+        "Предоставьте изображение, чтобы бот смог его идентифицировать. "
+        "Для перехода в стандартный режим введите команду /base.",
+    )
+
+
+@bot.message_handler(commands=["predict_address"])
+def set_predict_mospolytech_state(message):
+    """Переход в режим определения адреса корпуса Московского Политеха по изображению"""
+    bot.set_state(message.from_user.id, UserState.predict_mospolytech_state, message.chat.id)
+    bot.send_message(
+        message.from_user.id,
+        "Предоставьте изображение корпуса Московского Политеха, чтобы бот смог его идентифицировать. "
+        "Для перехода в стандартный режим введите команду /base.",
     )
