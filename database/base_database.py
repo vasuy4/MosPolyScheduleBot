@@ -4,13 +4,6 @@ from telebot.types import Message
 from peewee import IntegrityError
 
 
-def table_exists(cursor, table_name):
-    """Проверка на существование таблицы table_name в базе данных"""
-    cursor.execute("SELECT count(name) FROM sqlite_master WHERE type='table' AND name=?", (table_name,))
-    # Если счёт равен 1, то таблица существует
-    return cursor.fetchone()
-
-
 db = SqliteDatabase(DB_PATH)
 cursor = db.cursor()
 
@@ -28,7 +21,7 @@ class User(BaseModel):
     last_name = CharField(null=True)
 
 
-if not User.table_exists():
+if not User.table_exists():  # проверка и создание таблицы, если её нет.
     print("create table", User)
     db.create_tables([User])
 
