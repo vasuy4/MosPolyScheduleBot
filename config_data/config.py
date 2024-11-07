@@ -6,6 +6,7 @@ if not find_dotenv():
 else:
     load_dotenv()
 
+DB_PATH = "database.sqlite"
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 RAPID_API_KEY = os.getenv("RAPID_API_KEY")
 AI_API_KEY = os.getenv("API_AI_KEY")
