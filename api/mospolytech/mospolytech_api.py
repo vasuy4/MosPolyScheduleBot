@@ -1,6 +1,7 @@
 import json
 import requests
-from typing import List, Dict, Union, Any
+from requests.exceptions import SSLError
+from typing import List, Dict, Union, Tuple
 from datetime import datetime, timedelta
 
 DEFAULT_USER_AGENT = (
@@ -35,11 +36,16 @@ TIME_SECTIONS = {
 }
 
 
-def make_request(url: str) -> str:
+def make_request(url: str) -> Tuple[str, Union[SSLError, None]]:
     """Сделать запрос по ссылке для получения информации"""
-    r: requests.Response = requests.get(url=url, headers=HEADERS)
-    content: str = r.content.decode("utf-8")
-    return content
+    e = None
+    try:
+        r: requests.Response = requests.get(url=url, headers=HEADERS)
+        content: str = r.content.decode("utf-8")
+    except SSLError as e:
+        content: str = ""
+
+    return content, e
 
 
 def parse_grid(grid_source: dict) -> List[list]:
@@ -88,7 +94,8 @@ def parse_grid(grid_source: dict) -> List[list]:
 
 def get_groups() -> List[str]:
     """Получить группы студентов"""
-    data = json.loads(make_request(URLS["groups"]))
+    data, e = make_request(URLS["groups"])
+    data = json.loads(data)
     return sorted(name for name in data["groups"])
 
 
@@ -98,7 +105,7 @@ def get_schedule(group: str) -> Dict[str, Union[list, str]]:
         URLS["schedule"]
         + f"?group={group.replace(' ', '%20')}&session={1 if is_session else 0}"
     )
-    content: str = make_request(url)
+    content, e = make_request(url)
     data: Dict[str, Union[str, dict]] = json.loads(content)
     schedule = {
         "group": group,
