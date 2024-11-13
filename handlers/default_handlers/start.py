@@ -8,8 +8,6 @@ from config_data.config import ADMINS
 def bot_start(message: Message):
     """Хэндлер, выводящий сообщение при запуске бота"""
     is_new_user: bool = registration(message)
-    for admin in ADMINS:
-        print(admin, type(admin))
     if is_new_user:
         bot.reply_to(
             message,

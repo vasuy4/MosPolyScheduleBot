@@ -2,6 +2,7 @@ from peewee import *
 from config_data.config import DB_PATH
 from telebot.types import Message
 from peewee import IntegrityError
+from typing import Iterable
 
 
 db = SqliteDatabase(DB_PATH)
@@ -44,6 +45,14 @@ def registration(message: Message) -> bool:
         return True
     except IntegrityError:
         return False
+
+
+def get_users() -> Iterable[User]:
+    """
+    Получить данные от телеграмм аккаунтов пользователей.
+    """
+    r = User.select()
+    return r
 
 
 if __name__ == "__main__":
