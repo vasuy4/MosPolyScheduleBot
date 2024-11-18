@@ -18,7 +18,6 @@ translate: Dict[str, str] = {
     "horse": "лошадь",
     "ship": "корабль",
     "truck": "грузовик",
-
     # mospolytech
     "Б_Семёновская_38": "ул. Б. Семёновская, д. 38",
     "Прянишникова_2а": "ул. Прянишникова, 2А",
@@ -45,7 +44,9 @@ def predict_img(message: Message, obj_model: BasePredictModel) -> None:
         bot.reply_to(message, "Так это же: " + translate.get(answer, answer))
         os.remove(cache_path)
     else:
-        bot.reply_to(message, "Предоставьте, пожалуйста, изображение для идентификации объекта")
+        bot.reply_to(
+            message, "Предоставьте, пожалуйста, изображение для идентификации объекта"
+        )
 
 
 @bot.message_handler(state=UserState.predict_cifar_state, content_types=["photo"])
@@ -63,7 +64,10 @@ def predict_mospolytech_image_handler(message: Message) -> None:
 @bot.message_handler(content_types=["photo"])
 def get_image_handler(message: Message) -> None:
     if message.photo:
-        bot.reply_to(message, "В рамках работы с изображениями доступны следующие команды:\n"
-                              "/predict_obj - переход в режим определения объектов на изображении\n"
-                              "/predict_address - переход в режим определения адреса корпуса Московского Политеха по "
-                              "изображению")
+        bot.reply_to(
+            message,
+            "В рамках работы с изображениями доступны следующие команды:\n"
+            "/predict_obj - переход в режим определения объектов на изображении\n"
+            "/predict_address - переход в режим определения адреса корпуса Московского Политеха по "
+            "изображению",
+        )

@@ -26,7 +26,9 @@ def set_predict_cifar_state(message):
 @bot.message_handler(commands=["predict_address"])
 def set_predict_mospolytech_state(message):
     """Переход в режим определения адреса корпуса Московского Политеха по изображению"""
-    bot.set_state(message.from_user.id, UserState.predict_mospolytech_state, message.chat.id)
+    bot.set_state(
+        message.from_user.id, UserState.predict_mospolytech_state, message.chat.id
+    )
     bot.send_message(
         message.from_user.id,
         "Предоставьте изображение корпуса Московского Политеха, чтобы бот смог его идентифицировать. "

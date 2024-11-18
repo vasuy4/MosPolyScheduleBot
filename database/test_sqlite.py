@@ -12,7 +12,11 @@ with sqlite3.connect("database.sqlite") as conn:
     fake = Faker()
     for i in range(52):
         full_name = fake.name().split()
-        cursor.execute("INSERT INTO students (name, surname) VALUES ('{}', '{}')".format(full_name[0], full_name[1]))
+        cursor.execute(
+            "INSERT INTO students (name, surname) VALUES ('{}', '{}')".format(
+                full_name[0], full_name[1]
+            )
+        )
         conn.commit()
 
     cursor.execute("SELECT * FROM students;")
