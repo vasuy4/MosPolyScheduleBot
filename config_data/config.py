@@ -13,6 +13,7 @@ DB_PATH = "database.sqlite"
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 RAPID_API_KEY = os.getenv("RAPID_API_KEY")
 AI_API_KEY = os.getenv("API_AI_KEY")
+JOBS_API_KEY = os.getenv("API_KEY")
 ADMINS = loads(os.getenv("ADMINS"))
 DEFAULT_COMMANDS = (
     ("start", "Запустить бота"),

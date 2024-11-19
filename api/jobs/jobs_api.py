@@ -1,5 +1,6 @@
 import requests
 from typing import Dict
+from config_data.config import JOBS_API_KEY
 
 url = "https://jobs-api14.p.rapidapi.com/v2/list"
 
@@ -7,7 +8,7 @@ querystring = {"query": "Web Developer", "location": "United States"}
 # querystring = {"query":"Web Developer","location":"United States","distance":"1.0","language":"en_GB","remoteOnly":"false","datePosted":"month","employmentTypes":"fulltime;parttime;intern;contractor","index":"0"}
 
 headers = {
-    "x-rapidapi-key": "4939550346msh30b7b1b9a8266c2p1653edjsnc859bbe3877e",
+    "x-rapidapi-key": JOBS_API_KEY,
     "x-rapidapi-host": "jobs-api14.p.rapidapi.com",
 }
 
