@@ -4,7 +4,6 @@ from config_data.config import JOBS_API_KEY
 
 url = "https://jobs-api14.p.rapidapi.com/v2/list"
 
-querystring = {"query": "Web Developer", "location": "United States"}
 # querystring = {"query":"Web Developer","location":"United States","distance":"1.0","language":"en_GB","remoteOnly":"false","datePosted":"month","employmentTypes":"fulltime;parttime;intern;contractor","index":"0"}
 
 headers = {
@@ -15,8 +14,8 @@ headers = {
 
 def get_jobs_response(querystring: Dict[str, str]) -> dict:
     """Получить ответ от API поиска вакансий"""
-    # response = requests.get(url, headers=headers, params=querystring)
-    # return response.json()
+    response = requests.get(url, headers=headers, params=querystring)
+    return response.json()
     return {
         "jobs": [
             {
@@ -301,7 +300,8 @@ def get_jobs_response(querystring: Dict[str, str]) -> dict:
 
 
 if __name__ == "__main__":
-    jobs: dict = get_jobs_response()
+    querystring = {"query": "Web Developer", "location": "United States"}
+    jobs: dict = get_jobs_response(querystring)
     for job in jobs["jobs"]:
         for k, v in job.items():
             print("+{}+".format(k), v)
