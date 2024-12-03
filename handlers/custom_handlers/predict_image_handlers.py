@@ -1,4 +1,4 @@
-from loader import bot, obj_model_cifar, obj_model_mospolytech
+from loader import bot, obj_model_mospolytech
 from models.predict_image_models.base_model import BasePredictModel
 from states.states import UserState
 import os
@@ -49,11 +49,6 @@ def predict_img(message: Message, obj_model: BasePredictModel) -> None:
         )
 
 
-@bot.message_handler(state=UserState.predict_cifar_state, content_types=["photo"])
-def predict_cifar_image_handler(message: Message) -> None:
-    """Хэндлер, угадывающий существо на изображении"""
-    predict_img(message, obj_model_cifar)
-
 
 @bot.message_handler(state=UserState.predict_mospolytech_state, content_types=["photo"])
 def predict_mospolytech_image_handler(message: Message) -> None:
@@ -67,7 +62,6 @@ def get_image_handler(message: Message) -> None:
         bot.reply_to(
             message,
             "В рамках работы с изображениями доступны следующие команды:\n"
-            "/predict_obj - переход в режим определения объектов на изображении\n"
             "/predict_address - переход в режим определения адреса корпуса Московского Политеха по "
             "изображению",
         )
