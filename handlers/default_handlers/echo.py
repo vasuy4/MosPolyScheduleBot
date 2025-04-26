@@ -7,7 +7,7 @@ from loader import bot
 def bot_echo(message: Message):
     """Эхо хендлер, куда отправляются текстовые сообщения без указанного состояния"""
     if message.text.startswith("/"):
-        bot.reply_to(message, "Для просмотра доступных команд введите /help")
+        bot.reply_to(message, "Hello /help")
     else:
         pass
         # bot.reply_to(
